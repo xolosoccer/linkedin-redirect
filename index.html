@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Redirecting to LinkedIn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function openLinkedIn() {
+            const appUrl = "linkedin://in/mahima-bhargav-2437922b1";
+            const webUrl = "https://www.linkedin.com/in/mahima-bhargav-2437922b1";
+            const fallbackDelay = 1500; // in milliseconds
+            const timeoutDuration = 2000; // max time to wait before fallback
+
+            let fallbackTimeout;
+
+            try {
+                // Try opening the app
+                window.location = appUrl;
+
+                // Fallback logic after specified delay
+                fallbackTimeout = setTimeout(() => {
+                    // If after delay, assume app isn't installed or opening failed
+                    window.location = webUrl;
+                }, fallbackDelay);
+
+                // Safety timeout to prevent hanging if app partially loads
+                setTimeout(() => {
+                    clearTimeout(fallbackTimeout);
+                    window.location = webUrl;
+                }, timeoutDuration);
+
+            } catch (error) {
+                console.error("Redirect error:", error);
+                document.getElementById("errorMsg").textContent = "Oops! Something went wrong. Redirecting to web version...";
+                setTimeout(() => {
+                    window.location = webUrl;
+                }, 1000);
+            }
+        }
+    </script>
+</head>
+<body onload="openLinkedIn()">
+    <h2>Redirecting to LinkedIn...</h2>
+    <p>If you are not redirected automatically, <a href="https://www.linkedin.com/in/mahima-bhargav-2437922b1">click here</a>.</p>
+    <div id="errorMsg" class="error"></div>
+</body>
+</html>
